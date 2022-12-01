@@ -6,6 +6,7 @@ HTML/CSS/JS
 JS Canvas
 
 # Wireframe
+![Game Wireframe](./assets/project1wireframe.jpg "Game Wireframe")
 
 # MVP Goals
 * A start screen with the background continuously moving foward but without obstacles.
