@@ -1,0 +1,56 @@
+html,body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding-top: 1em;
+  text-align: center;
+  background-color: black;
+  background-size: cover;
+  background-repeat: space;
+}
+
+canvas {
+  background-color: #222;
+  width: 100%;
+  height: 70vh;
+}
+
+#container {
+  min-width: 50em;
+  /* height: 70vh; */
+  background-color: black;
+  margin: 0 auto;
+  padding: 1em;
+  display: grid;
+  grid-gap: 1em;
+  grid-template-rows: .25fr .5fr .25fr;
+  grid-template-columns: .25fr .5fr .25fr;
+  grid-template-areas: "top top top"
+                        "game game game"
+                        "bottom bottom bottom";
+  }
+
+  #top, #bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+}
+
+#top {
+  grid-area: top;
+}
+
+main {
+  grid-area: game;
+}
+
+#bottom {
+  grid-area: bottom;
+}
+
+#quit {
+  display: none;
+}
