@@ -20,7 +20,8 @@ JS Canvas
 # Stretch Goals
 * Implement an 'Infinite Run' mode that utilizes randomly generated obstacles.
 * Adjust the game so that it can work either on PC using a keyboard or on a phone/tablet using the touch screen.
-* Super EXTRA stretch goal - Reformat the game into a Galaga variant with enemies and weapons.
+* Moderate stretch goal - change movement style to WASD and give the avatar a gun to destroy obstacles with.
+* Super EXTRA stretch goal - Reforctor the game into a Galaga variant with enemies and weapons.
 
 # Potential Roadblocks
 * 0 previous experience interacting with mobile devices so that should create plenty of frustrating/fun new problems to solve for when implementing the stretch goals.
