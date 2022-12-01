@@ -3,6 +3,7 @@ I plan on building a side scroller arcade game similar to flappy bird with a pla
 
 # Tech Stack
 HTML/CSS/JS
+
 JS Canvas
 
 # Wireframe
