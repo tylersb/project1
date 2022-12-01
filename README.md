@@ -18,6 +18,7 @@ JS Canvas
 * Restart button on either/both Win and Loss screens.
 
 # Stretch Goals
+* Add MIDI music
 * Implement an 'Infinite Run' mode that utilizes randomly generated obstacles.
 * Adjust the game so that it can work either on PC using a keyboard or on a phone/tablet using the touch screen.
 * Moderate stretch goal - change movement style to WASD and give the avatar a gun to destroy obstacles with.
