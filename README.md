@@ -15,11 +15,12 @@ JS Canvas
 * One statically designed stage with intentionally placed obstacles in order to strictly control difficulty.
 * A finish line at the end of the stage to determine the win condition.
 * Obstacles that will determine the fail condition if touched by the player avatar.
-* Restart button on either/both Win and Loss screens
+* Restart button on either/both Win and Loss screens.
 
 # Stretch Goals
-* Implement an 'Infinite Run' mode that utilizes randomly generated obstacles
-* Adjust the game so that it can work either on PC using a keyboard or on a phone/tablet using the touch screen
+* Implement an 'Infinite Run' mode that utilizes randomly generated obstacles.
+* Adjust the game so that it can work either on PC using a keyboard or on a phone/tablet using the touch screen.
+* Super EXTRA stretch goal - Reformat the game into a Galaga variant with enemies and weapons.
 
 # Potential Roadblocks
 * 0 previous experience interacting with mobile devices so that should create plenty of frustrating/fun new problems to solve for when implementing the stretch goals.
