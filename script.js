@@ -25,11 +25,14 @@ class Entity {
 // define variables that depend on classes to exist first
 const avatar = new Entity(50, 300, 25, 25, '#99FFFF')
 const screenRight = parseFloat(getComputedStyle(canvas).width, 10)
-const wall = new Entity(screenRight, 0, 25, 250, 'green')
+const screenBottom = parseFloat(getComputedStyle(canvas).height, 10)
+const randHeight = 100 + Math.floor(Math.random() * 300)
+const wallBottom = (screenBottom - randHeight)
+const wall = new Entity(screenRight, 0, 25, randHeight, 'green')
+const wall2 = new Entity(screenRight, (screenBottom - randHeight), 25, randHeight, 'green')
 
 // avatar movement
 const pressedKeys = {}
-const screenBottom = parseFloat(getComputedStyle(canvas).height, 10)
 
 function handleMovement (speed) {
   if (pressedKeys.w) {
@@ -46,8 +49,31 @@ document.addEventListener('keydown', (e) => (pressedKeys[e.key] = true))
 document.addEventListener('keyup', (e) => (pressedKeys[e.key] = false))
 
 // obstacle movement
-function moveObstacle (speed) {
-  wall.x -= speed
+function moveObstacle (wallNum, speed) {
+  wallNum.x -= speed
+}
+
+function topWallStreaming (wallNum) {
+  if ((wallNum.x + wallNum.width) > 0) {
+    moveObstacle(wallNum, 3)
+    // console.log(wall)
+  } else if ((wallNum.x + wallNum.width) <= 0) {
+    wallNum.x = screenRight
+    console.log(wallNum)
+    wallNum.height = (100 + Math.floor(Math.random() * 300))
+  }
+}
+
+function bottomWallStreaming (wallNum) {
+  if ((wallNum.x + wallNum.width) > 0) {
+    moveObstacle(wallNum, 3)
+    // console.log(wall)
+  } else if ((wallNum.x + wallNum.width) <= 0) {
+    wallNum.x = screenRight
+    console.log(wallNum)
+    wallNum.height = (100 + Math.floor(Math.random() * 300))
+    wallNum.y = screenBottom - wallNum.height
+  }
 }
 
 // game loop
@@ -58,13 +84,9 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   avatar.render()
   wall.render()
-  if ((wall.x + wall.width) > 0) {
-    moveObstacle(3)
-    console.log(wall)
-  } else if ((wall.x + wall.width) <= 0) {
-    wall.x = screenRight
-    console.log(wall)
-  }
+  wall2.render()
+  topWallStreaming(wall)
+  bottomWallStreaming(wall2)
   handleMovement(4)
 }
 
