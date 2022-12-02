@@ -15,7 +15,7 @@ class Entity {
     this.height = height
     this.color = color
   }
-  
+
   render() {
     ctx.fillStyle = this.color
     ctx.fillRect(this.x, this.y, this.width, this.height)
@@ -58,10 +58,8 @@ function moveObstacle (wallNum) {
 function topWallStreaming (wallNum) {
   if ((wallNum.x + wallNum.width) > 0) {
     moveObstacle(wallNum)
-    // console.log(wall)
   } else if ((wallNum.x + wallNum.width) <= 0) {
     wallNum.x = screenRight
-    console.log(wallNum)
     wallNum.height = (100 + Math.floor(Math.random() * 300))
   }
 }
@@ -69,10 +67,8 @@ function topWallStreaming (wallNum) {
 function bottomWallStreaming (wallNum) {
   if ((wallNum.x + wallNum.width) > 0) {
     moveObstacle(wallNum)
-    // console.log(wall)
   } else if ((wallNum.x + wallNum.width) <= 0) {
     wallNum.x = screenRight
-    console.log(wallNum)
     wallNum.height = (100 + Math.floor(Math.random() * 300))
     wallNum.y = screenBottom - wallNum.height
   }
@@ -86,12 +82,28 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   avatar.render()
   wall.render()
-  topWallStreaming(wall)
   if (delayWall === false) {
     wall2.render()
-    bottomWallStreaming(wall2)
   }
-  handleMovement(4)
+  if ((detectHit(avatar, wall)) || (detectHit(avatar, wall2))) {
+    console.log('dead')
+  } else {
+    topWallStreaming(wall)
+    if (delayWall === false) {
+      bottomWallStreaming(wall2)
+    }
+    handleMovement(4)
+  }
 }
 
 // collision detection
+function detectHit (objectOne, objectTwo) {
+  // AABB -- axis aligned bounding box collision detection
+  // check for overlaps, side by side
+  const left = objectOne.x + objectOne.width >= objectTwo.x
+  const right = objectOne.x <= objectTwo.x + objectTwo.width
+  const top = objectOne.y + objectOne.height >= objectTwo.y
+  const bottom = objectOne.y <= objectTwo.y + objectTwo.height
+  // console.log(left, right, top, bottom)
+  return left && right && top && bottom
+}
