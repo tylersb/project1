@@ -13,8 +13,8 @@ body {
 
 canvas {
   background-color: #222;
-  width: 100%;
-  height: 70vh;
+  width: 1000px;
+  height: 500px;
 }
 
 #container {
