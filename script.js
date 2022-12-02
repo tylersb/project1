@@ -1,6 +1,6 @@
 // define general vars/queryselectors
 const start = document.querySelector('#start')
-const quit = document.querySelector('#quit')
+const score = document.querySelector('#score')
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 canvas.setAttribute('height', getComputedStyle(canvas).height)
@@ -22,26 +22,33 @@ class Entity {
   }
 }
 
-// define variables that depend on classes to exist first
+// define variables that depend on classes to exist first / game variables
 const screenRight = parseFloat(getComputedStyle(canvas).width, 10)
 const screenBottom = parseFloat(getComputedStyle(canvas).height, 10)
-const randHeight = 100 + Math.floor(Math.random() * 300)
-const avatar = new Entity((screenRight / 5), (screenBottom / 2), 25, 25, '#99FFFF')
+const randHeight = 100 + Math.floor(Math.random() * 200)
+const avatar = new Entity(screenRight / 5, screenBottom / 2, 25, 25, '#99FFFF')
 const wall = new Entity(screenRight, 0, 50, randHeight, 'green')
-const wall2 = new Entity(screenRight, (screenBottom - randHeight), 50, randHeight, 'green')
+const wall2 = new Entity(
+  screenRight,
+  screenBottom - randHeight,
+  50,
+  randHeight,
+  'green'
+)
 let delayWall = true
-setTimeout(function () { delayWall = false }, 2000)
+let gameRunning = false
+let gameScore = 0
 
 // avatar movement
-const pressedKeys = {}
+let pressedKeys = {}
 
-function handleMovement (speed) {
+function handleMovement(speed) {
   if (pressedKeys.w) {
     if (avatar.y > 0) {
       avatar.y -= speed
     }
   } else if (pressedKeys.w === false) {
-    if ((avatar.y + avatar.height) < (screenBottom - 5)) {
+    if (avatar.y + avatar.height < screenBottom - 5) {
       avatar.y += speed
     }
   }
@@ -51,28 +58,44 @@ document.addEventListener('keyup', (e) => (pressedKeys[e.key] = false))
 
 // obstacle movement
 const wallSpeed = 4
-function moveObstacle (wallNum) {
+function moveObstacle(wallNum) {
   wallNum.x -= wallSpeed
 }
 
-function topWallStreaming (wallNum) {
-  if ((wallNum.x + wallNum.width) > 0) {
+function topWallStreaming(wallNum) {
+  if (wallNum.x + wallNum.width > 0) {
     moveObstacle(wallNum)
-  } else if ((wallNum.x + wallNum.width) <= 0) {
+  } else if (wallNum.x + wallNum.width <= 0) {
     wallNum.x = screenRight
-    wallNum.height = (100 + Math.floor(Math.random() * 300))
+    wallNum.height = 100 + Math.floor(Math.random() * 200)
   }
 }
 
-function bottomWallStreaming (wallNum) {
-  if ((wallNum.x + wallNum.width) > 0) {
+function bottomWallStreaming(wallNum) {
+  if (wallNum.x + wallNum.width > 0) {
     moveObstacle(wallNum)
-  } else if ((wallNum.x + wallNum.width) <= 0) {
+  } else if (wallNum.x + wallNum.width <= 0) {
     wallNum.x = screenRight
-    wallNum.height = (100 + Math.floor(Math.random() * 300))
+    wallNum.height = 100 + Math.floor(Math.random() * 200)
     wallNum.y = screenBottom - wallNum.height
   }
 }
+
+// button functionality
+function resetGame() {
+  gameRunning = true
+  pressedKeys = {}
+  avatar.x = screenRight / 5
+  avatar.y = screenBottom / 2
+  delayWall = true
+  setTimeout(function () {
+    delayWall = false
+  }, 2000)
+  wall.x = screenRight
+  wall2.x = screenRight
+  gameScore = 0
+}
+start.addEventListener('click', resetGame)
 
 // game loop
 const gameLoopInterval = setInterval(gameLoop, 16)
@@ -82,22 +105,25 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   avatar.render()
   wall.render()
+  score.innerText = gameScore
   if (delayWall === false) {
     wall2.render()
   }
-  if ((detectHit(avatar, wall)) || (detectHit(avatar, wall2))) {
-    console.log('dead')
-  } else {
+  if (detectHit(avatar, wall) || detectHit(avatar, wall2)) {
+    gameRunning = false
+  }
+  if (gameRunning === true) {
     topWallStreaming(wall)
     if (delayWall === false) {
       bottomWallStreaming(wall2)
     }
     handleMovement(4)
+    gameScore++
   }
 }
 
 // collision detection
-function detectHit (objectOne, objectTwo) {
+function detectHit(objectOne, objectTwo) {
   // AABB -- axis aligned bounding box collision detection
   // check for overlaps, side by side
   const left = objectOne.x + objectOne.width >= objectTwo.x

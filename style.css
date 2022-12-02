@@ -9,6 +9,7 @@ body {
   background-color: black;
   background-size: cover;
   background-repeat: space;
+  color: whitesmoke;
 }
 
 canvas {
@@ -19,7 +20,6 @@ canvas {
 
 #container {
   min-width: 50em;
-  /* height: 70vh; */
   background-color: black;
   margin: 0 auto;
   padding: 1em;
@@ -32,7 +32,7 @@ canvas {
                         "bottom bottom bottom";
   }
 
-  #top, #bottom {
+#top, #bottom {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,6 +51,6 @@ main {
   grid-area: bottom;
 }
 
-#quit {
-  display: none;
+#top div {
+  display: block;
 }
