@@ -26,3 +26,7 @@ JS Canvas
 
 # Potential Roadblocks
 * 0 previous experience interacting with mobile devices so that should create plenty of frustrating/fun new problems to solve for when implementing the stretch goals.
+
+# Sources
+Weston's Slay the Ogre lesson
+Assets: "www.kenney.nl"

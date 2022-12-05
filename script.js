@@ -6,6 +6,9 @@ const ctx = canvas.getContext('2d')
 canvas.setAttribute('height', getComputedStyle(canvas).height)
 canvas.setAttribute('width', getComputedStyle(canvas).width)
 
+const avSprite = new Image()
+avSprite.src = './assets/Ship.png'
+
 // set up class(es)
 class Entity {
   constructor(x, y, width, height, color) {
@@ -25,8 +28,10 @@ class Entity {
 // define variables that depend on classes to exist first / game variables
 const screenRight = parseFloat(getComputedStyle(canvas).width, 10)
 const screenBottom = parseFloat(getComputedStyle(canvas).height, 10)
-const randHeight = 100 + Math.floor(Math.random() * 200)
-const avatar = new Entity(screenRight / 5, screenBottom / 2, 25, 25, '#99FFFF')
+const randHeight = 200 + Math.floor(Math.random() * 200)
+const midHitbox = screenBottom / 2 + 20
+const avatar = new Entity(screenRight / 5, screenBottom / 2, 25, 55, 'rgba(255, 255, 255, 0)')
+const avatar2 = new Entity(screenRight / 5, midHitbox, 42, 15, 'rgba(255, 255, 255, 0)')
 const wall = new Entity(screenRight, 0, 50, randHeight, 'green')
 const wall2 = new Entity(
   screenRight,
@@ -46,10 +51,12 @@ function handleMovement(speed) {
   if (pressedKeys.w) {
     if (avatar.y > 0) {
       avatar.y -= speed
+      avatar2.y -= speed
     }
   } else if (pressedKeys.w === false) {
     if (avatar.y + avatar.height < screenBottom - 5) {
       avatar.y += speed
+      avatar2.y += speed
     }
   }
 }
@@ -67,7 +74,7 @@ function topWallStreaming(wallNum) {
     moveObstacle(wallNum)
   } else if (wallNum.x + wallNum.width <= 0) {
     wallNum.x = screenRight
-    wallNum.height = 100 + Math.floor(Math.random() * 200)
+    wallNum.height = 200 + Math.floor(Math.random() * 200)
   }
 }
 
@@ -76,7 +83,7 @@ function bottomWallStreaming(wallNum) {
     moveObstacle(wallNum)
   } else if (wallNum.x + wallNum.width <= 0) {
     wallNum.x = screenRight
-    wallNum.height = 100 + Math.floor(Math.random() * 200)
+    wallNum.height = 200 + Math.floor(Math.random() * 200)
     wallNum.y = screenBottom - wallNum.height
   }
 }
@@ -85,8 +92,8 @@ function bottomWallStreaming(wallNum) {
 function resetGame() {
   gameRunning = true
   pressedKeys = {}
-  avatar.x = screenRight / 5
   avatar.y = screenBottom / 2
+  avatar2.y = midHitbox
   delayWall = true
   setTimeout(function () {
     delayWall = false
@@ -104,12 +111,19 @@ function gameLoop() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   avatar.render()
+  avatar2.render()
+  ctx.drawImage(avSprite, avatar.x - 7, avatar.y - 6, 50, 67)
   wall.render()
   score.innerText = gameScore
   if (delayWall === false) {
     wall2.render()
   }
-  if (detectHit(avatar, wall) || detectHit(avatar, wall2)) {
+  if (
+    detectHit(avatar, wall) ||
+    detectHit(avatar, wall2) ||
+    detectHit(avatar2, wall) ||
+    detectHit(avatar2, wall2)
+  ) {
     gameRunning = false
   }
   if (gameRunning === true) {
