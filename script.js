@@ -9,6 +9,9 @@ canvas.setAttribute('width', getComputedStyle(canvas).width)
 const avSprite = new Image()
 avSprite.src = './assets/Ship.png'
 
+const wallSprite = new Image()
+wallSprite.src = './assets/Forcefield.png'
+
 // set up class(es)
 class Entity {
   constructor(x, y, width, height, color) {
@@ -32,13 +35,13 @@ const randHeight = 200 + Math.floor(Math.random() * 200)
 const midHitbox = screenBottom / 2 + 20
 const avatar = new Entity(screenRight / 5, screenBottom / 2, 25, 55, 'rgba(255, 255, 255, 0)')
 const avatar2 = new Entity(screenRight / 5, midHitbox, 42, 15, 'rgba(255, 255, 255, 0)')
-const wall = new Entity(screenRight, 0, 50, randHeight, 'green')
+const wall = new Entity(screenRight, 0, 50, randHeight, 'rgba(255, 255, 255, 0)')
 const wall2 = new Entity(
   screenRight,
   screenBottom - randHeight,
   50,
   randHeight,
-  'green'
+  'rgba(255, 255, 255, 0)'
 )
 let delayWall = true
 let gameRunning = false
@@ -114,9 +117,11 @@ function gameLoop() {
   avatar2.render()
   ctx.drawImage(avSprite, avatar.x - 7, avatar.y - 6, 50, 67)
   wall.render()
+  ctx.drawImage(wallSprite, wall.x, wall.y, wall.width, wall.height)
   score.innerText = gameScore
   if (delayWall === false) {
     wall2.render()
+    ctx.drawImage(wallSprite, wall2.x, wall2.y, wall2.width, wall2.height)
   }
   if (
     detectHit(avatar, wall) ||
