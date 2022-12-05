@@ -12,6 +12,9 @@ avSprite.src = './assets/Ship.png'
 const wallSprite = new Image()
 wallSprite.src = './assets/Forcefield.png'
 
+const background = new Image()
+background.src = './assets/background.png'
+
 // set up class(es)
 class Entity {
   constructor(x, y, width, height, color) {
@@ -113,6 +116,7 @@ const gameLoopInterval = setInterval(gameLoop, 16)
 function gameLoop() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.drawImage(background, 0, 0, screenRight * 1.5, screenBottom * 2)
   avatar.render()
   avatar2.render()
   ctx.drawImage(avSprite, avatar.x - 7, avatar.y - 6, 50, 67)
