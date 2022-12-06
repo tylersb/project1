@@ -36,9 +36,27 @@ const screenRight = parseFloat(getComputedStyle(canvas).width, 10)
 const screenBottom = parseFloat(getComputedStyle(canvas).height, 10)
 const randHeight = 200 + Math.floor(Math.random() * 200)
 const midHitbox = screenBottom / 2 + 20
-const avatar = new Entity(screenRight / 5, screenBottom / 2, 25, 55, 'rgba(255, 255, 255, 0)')
-const avatar2 = new Entity(screenRight / 5, midHitbox, 42, 15, 'rgba(255, 255, 255, 0)')
-const wall = new Entity(screenRight, 0, 50, randHeight, 'rgba(255, 255, 255, 0)')
+const avatar = new Entity(
+  screenRight / 5,
+  screenBottom / 2,
+  25,
+  55,
+  'rgba(255, 255, 255, 0)'
+)
+const avatar2 = new Entity(
+  screenRight / 5,
+  midHitbox,
+  42,
+  15,
+  'rgba(255, 255, 255, 0)'
+)
+const wall = new Entity(
+  screenRight,
+  0,
+  50,
+  randHeight,
+  'rgba(255, 255, 255, 0)'
+)
 const wall2 = new Entity(
   screenRight,
   screenBottom - randHeight,
@@ -49,6 +67,9 @@ const wall2 = new Entity(
 let delayWall = true
 let gameRunning = false
 let gameScore = 0
+const audio = new Audio('./assets/bgm.mp3')
+audio.loop = true
+console.log(audio.currentTime)
 
 // avatar movement
 let pressedKeys = {}
@@ -107,6 +128,9 @@ function resetGame() {
   wall.x = screenRight
   wall2.x = screenRight
   gameScore = 0
+  if (audio.currentTime === 0) {
+    audio.play()
+  }
 }
 start.addEventListener('click', resetGame)
 
