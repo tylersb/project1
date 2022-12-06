@@ -70,7 +70,7 @@ document.addEventListener('keydown', (e) => (pressedKeys[e.key] = true))
 document.addEventListener('keyup', (e) => (pressedKeys[e.key] = false))
 
 // obstacle movement
-const wallSpeed = 4
+const wallSpeed = 3
 function moveObstacle(wallNum) {
   wallNum.x -= wallSpeed
 }
@@ -103,7 +103,7 @@ function resetGame() {
   delayWall = true
   setTimeout(function () {
     delayWall = false
-  }, 2000)
+  }, 700)
   wall.x = screenRight
   wall2.x = screenRight
   gameScore = 0
@@ -111,7 +111,7 @@ function resetGame() {
 start.addEventListener('click', resetGame)
 
 // game loop
-const gameLoopInterval = setInterval(gameLoop, 16)
+const gameLoopInterval = setInterval(gameLoop, 1)
 
 function gameLoop() {
   // clear canvas
