@@ -39,6 +39,30 @@ class Entity {
   }
 }
 
+class Obstacle extends Entity {
+  constructor(x, y, width, height, color, position) {
+    super(x, y, width, height, color)
+    this.position = position
+  }
+
+  skin(image) {
+    ctx.drawImage(image, this.x, this.y, this.width, this.height)
+  }
+
+  // function for moving obstacles across the game screen then once they move offscreen they move back to the beginning of the game screen with a randomized height
+  move() {
+    if (this.x + this.width > 0) {
+      this.x -= wallSpeed
+    } else if (this.x + this.width <= 0) {
+      this.x = screenRight
+      this.height = 200 + Math.floor(Math.random() * 200)
+      if (this.position === 'bottom') {
+        this.y = screenBottom - this.height
+      }
+    }
+  }
+}
+
 // defining game variables and variables that depend on previously defined classes
 const randHeight = 200 + Math.floor(Math.random() * 200)
 const midHitbox = screenBottom / 2 + 20
@@ -60,19 +84,14 @@ const avatar2 = new Entity(
 )
 
 // hitboxes for the wall obstacles that are spawned
-const wall = new Entity(
-  screenRight,
-  0,
-  50,
-  randHeight,
-  'rgba(255, 255, 255, 0)'
-)
-const wall2 = new Entity(
+const wall = new Obstacle(screenRight, 0, 50, randHeight, 'rgba(255, 255, 255, 0)', 'top')
+const wall2 = new Obstacle(
   screenRight,
   screenBottom - randHeight,
   50,
   randHeight,
-  'rgba(255, 255, 255, 0)'
+  'rgba(255, 255, 255, 0)',
+  'bottom'
 )
 
 // initial game values for the start of the game
@@ -113,31 +132,6 @@ canvas.addEventListener('touchstart', (e) => {
 })
 canvas.addEventListener('touchend', () => (pressedKeys.w = false))
 
-// obstacle movement
-function moveObstacle(wallNum) {
-  wallNum.x -= wallSpeed
-}
-
-// functions to move obstacles across the screen and then once they move offscreen regenerate them again from the beginning with new randomized heights
-function topWallStreaming(wallNum) {
-  if (wallNum.x + wallNum.width > 0) {
-    moveObstacle(wallNum)
-  } else if (wallNum.x + wallNum.width <= 0) {
-    wallNum.x = screenRight
-    wallNum.height = 200 + Math.floor(Math.random() * 200)
-  }
-}
-
-function bottomWallStreaming(wallNum) {
-  if (wallNum.x + wallNum.width > 0) {
-    moveObstacle(wallNum)
-  } else if (wallNum.x + wallNum.width <= 0) {
-    wallNum.x = screenRight
-    wallNum.height = 200 + Math.floor(Math.random() * 200)
-    wallNum.y = screenBottom - wallNum.height
-  }
-}
-
 // start/restart button function that resets game values to initial starting values
 function startGame() {
   gameRunning = true
@@ -161,19 +155,19 @@ start.addEventListener('click', startGame)
 const gameLoopInterval = setInterval(gameLoop, 1)
 
 function gameLoop() {
-  // clear canvas and create avatar & wall hitboxes as well as images for the avatar and walls, then begin incrementing the game score.
+  // clear canvas and create avatar & wall hitboxes as well as attach images for the avatar and walls to their hitboxes, then begin incrementing the game score.
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.drawImage(background, 0, 0)
   avatar.render()
   avatar2.render()
   ctx.drawImage(avSprite, avatar.x - 7, avatar.y - 6, 50, 67)
   wall.render()
-  ctx.drawImage(wallSprite, wall.x, wall.y, wall.width, wall.height)
+  wall.skin(wallSprite)
   score.innerText = gameScore
-  // delay initial rendering of second wall so that both walls don't generate on top of eachother and become impossible to pass 
+  // delay initial rendering of second wall so that both walls don't generate on top of eachother and become impossible to pass
   if (delayWall === false) {
     wall2.render()
-    ctx.drawImage(wallSprite, wall2.x, wall2.y, wall2.width, wall2.height)
+    wall2.skin(wallSprite)
   }
   // check hit detection algorithm and stop game movement + show a Game Over screen if a collision is detected
   if (
@@ -188,9 +182,11 @@ function gameLoop() {
     ctx.fillText('Game Over!', 350, 300)
   }
   if (gameRunning === true) {
-    topWallStreaming(wall)
+    // topWallStreaming(wall)
+    wall.move()
     if (delayWall === false) {
-      bottomWallStreaming(wall2)
+      wall2.move()
+      // bottomWallStreaming(wall2)
     }
     handleMovement(avatarSpeed)
     gameScore++
