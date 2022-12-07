@@ -69,7 +69,6 @@ let gameRunning = false
 let gameScore = 0
 const audio = new Audio('./assets/bgm.mp3')
 audio.loop = true
-console.log(audio.currentTime)
 
 // avatar movement
 let pressedKeys = {}
@@ -116,7 +115,7 @@ function bottomWallStreaming(wallNum) {
 }
 
 // button functionality
-function resetGame() {
+function startGame() {
   gameRunning = true
   pressedKeys = {}
   avatar.y = screenBottom / 2
@@ -132,7 +131,7 @@ function resetGame() {
     audio.play()
   }
 }
-start.addEventListener('click', resetGame)
+start.addEventListener('click', startGame)
 
 // game loop
 const gameLoopInterval = setInterval(gameLoop, 1)
@@ -140,7 +139,7 @@ const gameLoopInterval = setInterval(gameLoop, 1)
 function gameLoop() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.drawImage(background, 0, 0, screenRight * 1.5, screenBottom * 2)
+  ctx.drawImage(background, 0, 0)
   avatar.render()
   avatar2.render()
   ctx.drawImage(avSprite, avatar.x - 7, avatar.y - 6, 50, 67)
@@ -158,6 +157,9 @@ function gameLoop() {
     detectHit(avatar2, wall2)
   ) {
     gameRunning = false
+    ctx.fillStyle = 'white'
+    ctx.font = '60px serif'
+    ctx.fillText('Game Over!', 350, 300)
   }
   if (gameRunning === true) {
     topWallStreaming(wall)
@@ -177,6 +179,5 @@ function detectHit(objectOne, objectTwo) {
   const right = objectOne.x <= objectTwo.x + objectTwo.width
   const top = objectOne.y + objectOne.height >= objectTwo.y
   const bottom = objectOne.y <= objectTwo.y + objectTwo.height
-  // console.log(left, right, top, bottom)
   return left && right && top && bottom
 }
