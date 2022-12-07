@@ -1,6 +1,9 @@
 # Sidescroller Pitch
 I plan on building a side scroller arcade game similar to flappy bird with a player controlled character that moves up based on a keypress and begins falling down when there are no keys being pressed. The main goal is to complete the level while avoiding hitting any obstacles that show up along the way, either from the top or the bottom of the game canvas. Thematically I plan on going with something that deviates from the flappy bird aesthetic, although I haven't finalized which theme I ultimately want to go with.
 
+## Link to game
+https://tylersb.github.io/project1/
+
 # Tech Stack
 HTML/CSS/JS
 

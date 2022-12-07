@@ -22,6 +22,7 @@ background.src = './assets/background.png'
 // initial loading of background music and setting it to loop when the audio ends
 const audio = new Audio('./assets/bgm.mp3')
 audio.loop = true
+audio.volume = 0.5
 
 // setting up class(es)
 class Entity {
@@ -84,7 +85,14 @@ const avatar2 = new Entity(
 )
 
 // hitboxes for the wall obstacles that are spawned
-const wall = new Obstacle(screenRight, 0, 50, randHeight, 'rgba(255, 255, 255, 0)', 'top')
+const wall = new Obstacle(
+  screenRight,
+  0,
+  50,
+  randHeight,
+  'rgba(255, 255, 255, 0)',
+  'top'
+)
 const wall2 = new Obstacle(
   screenRight,
   screenBottom - randHeight,
@@ -100,8 +108,8 @@ let gameRunning = false
 let gameScore = 0
 
 // game design/difficulty tunables
-const wallSpeed = 3
-const avatarSpeed = 5
+const wallSpeed = 7
+const avatarSpeed = 9
 const secondWallDelay = 700
 
 // avatar movement
@@ -152,7 +160,7 @@ function startGame() {
 start.addEventListener('click', startGame)
 
 // game loop
-const gameLoopInterval = setInterval(gameLoop, 1)
+const gameLoopInterval = setInterval(gameLoop, 10)
 
 function gameLoop() {
   // clear canvas and create avatar & wall hitboxes as well as attach images for the avatar and walls to their hitboxes, then begin incrementing the game score.
@@ -182,11 +190,9 @@ function gameLoop() {
     ctx.fillText('Game Over!', 350, 300)
   }
   if (gameRunning === true) {
-    // topWallStreaming(wall)
     wall.move()
     if (delayWall === false) {
       wall2.move()
-      // bottomWallStreaming(wall2)
     }
     handleMovement(avatarSpeed)
     gameScore++
