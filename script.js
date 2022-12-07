@@ -88,6 +88,11 @@ function handleMovement(speed) {
 }
 document.addEventListener('keydown', (e) => (pressedKeys[e.key] = true))
 document.addEventListener('keyup', (e) => (pressedKeys[e.key] = false))
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault()
+  pressedKeys.w = true
+})
+canvas.addEventListener('touchend', (e) => (pressedKeys.w = false))
 
 // obstacle movement
 const wallSpeed = 3
